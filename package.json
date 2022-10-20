@@ -1,0 +1,22 @@
+{
+  "name": "3kifsnode",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start-client": "react-scripts start",
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "discord.js": "^14.6.0",
+    "dotenv": "^16.0.3",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1",
+    "node-cron": "^3.0.2",
+    "pg": "^8.8.0",
+    "pug": "2.0.0-beta11",
+    "vercel": "^28.4.12"
+  }
+}
