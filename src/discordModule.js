@@ -62,7 +62,15 @@ client.on('interactionCreate', async interaction => {
     const command = interaction.client.commands.get(interaction.commandName);
     if (!command) return;
     try {
-        await command.execute(interaction);
+        if (command.data.name !== 'koukou'){
+            await command.execute(interaction);
+        } else {
+            let {id: userId } = interaction.user;
+            client.users.fetch(userId).then((user) => {
+                user.send('Hey ! T\'as bien kiffé ta journée ? Tu me racontes ?');
+            });
+            await interaction.reply({content: `Je t'ai envoyé un DM ;)`, ephemeral: true});
+        }
     } catch (error) {
         console.error(error);
         await interaction.reply({content: 'There was an error while executing this command!', ephemeral: true});
