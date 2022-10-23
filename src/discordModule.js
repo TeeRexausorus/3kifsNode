@@ -2,7 +2,7 @@
 var cron = require('node-cron');
 const pgController = require('./pgController');
 //s m h  d m y
-cron.schedule('0 30 22 * * *', async () => {
+cron.schedule('0 0 20 * * *', async () => {
     await notifyUsers()
 });
 
