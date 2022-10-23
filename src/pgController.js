@@ -25,7 +25,7 @@ const getRandomKif = (userId, interaction) => {
         .then(res =>{
             const {day_out, month_out, year_out, kif} = res.rows[0];
             let ret = `Le ${day_out} ${monthNames[month_out - 1]} ${year_out}, tu as eu ce kif : ${kif}`;
-            interaction.reply({content: ret, ephemeral: true});
+            interaction.reply({content: ret, ephemeral: false});
     })
 };
 
