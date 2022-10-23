@@ -1,13 +1,15 @@
 //init pour DiscordModule
 var cron = require('node-cron');
 const pgController = require('./pgController');
-                       //s m h  d m y
+//s m h  d m y
 cron.schedule('0 0 20 * * *', async () => {
     await notifyUsers()
 });
 
 require('dotenv').config();
-const {Client, GatewayIntentBits, Partials, Collection} = require('discord.js');
+const {
+    Client, GatewayIntentBits, Partials, Collection
+} = require('discord.js');
 //const pgController = require('./pgController')
 const path = require("path");
 const fs = require("fs");
@@ -45,12 +47,20 @@ client.once('ready', () => {
 });
 
 client.on('interactionCreate', async interaction => {
+    if (interaction.isModalSubmit()){
+        if (interaction.customId === 'kifModal') {
+            const kiffance = interaction.fields.getTextInputValue('textKifInput');
+            let {id: userId, username} = interaction.user;
+            pgController.insertKif(userId, username, kiffance);
+            await interaction.reply({content: `Trop cool ! Et quoi d'autre ? :D`, ephemeral: true});
+        }
+        return;
+    }
+
     if (!interaction.isChatInputCommand()) return;
 
     const command = interaction.client.commands.get(interaction.commandName);
-
     if (!command) return;
-
     try {
         await command.execute(interaction);
     } catch (error) {
@@ -67,7 +77,9 @@ client.on('messageCreate', message => {
 let notifyUsers = async () => {
     let ids = await pgController.getUserIds();
     ids.forEach((user) => {
-        client.users.fetch(user.userId).then((user) => {user.send('Hey ! T\'as bien kiffé ta journée ? Tu me racontes ?');});
+        client.users.fetch(user.userId).then((user) => {
+            user.send('Hey ! T\'as bien kiffé ta journée ? Tu me racontes ?');
+        });
     })
 
 }

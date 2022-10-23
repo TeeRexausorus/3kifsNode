@@ -11,9 +11,8 @@ module.exports = {
         ),
     async execute(interaction) {
         let kiffance = interaction.options.getString('kif');
-        let userId = interaction.user.id;
-        let username = interaction.user.username;
+        let {id: userId, username } = interaction.user;
         pgController.insertKif(userId, username, kiffance);
-        await interaction.reply(`Tu as donc eu ce kif : "${kiffance}". Et quoi d'autre ? :D`);
+        await interaction.reply({content: `Tu as donc eu ce kif : "${kiffance}". Et quoi d'autre ? :D`, ephemeral: true});
     },
 };
