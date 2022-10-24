@@ -17,7 +17,7 @@ const insertKif = (userId, username, kif) => {
         });
 };
 
-const getRandomKif = (userId, interaction) => {
+const getRandomKif = (userId, interaction, ephemeral) => {
     const monthNames = ["Janvier", "Février", "Mar", "Avril", "Mai", "Juin",
         "Juillet", "Aout", "Septembre", "Octobre", "Novembre", "Decembre"];
     const query = 'SELECT "username", "kif", date_part(\'day\', "dateKif"::date) as day_out, date_part(\'month\', "dateKif"::date) as month_out, date_part(\'year\', "dateKif"::date) as year_out FROM kif WHERE "userId" like $1 ORDER BY random() LIMIT 1;';
@@ -25,7 +25,7 @@ const getRandomKif = (userId, interaction) => {
         .then(res =>{
             const {day_out, month_out, year_out, kif} = res.rows[0];
             let ret = `Le ${day_out} ${monthNames[month_out - 1]} ${year_out}, tu as eu ce kif : ${kif}`;
-            interaction.reply({content: ret, ephemeral: false});
+            interaction.reply({content: ret, ephemeral: ephemeral});
     })
 };
 
