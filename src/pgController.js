@@ -11,6 +11,11 @@ client
     .catch(err => console.error('connection error', err.stack));
 
 const insertKif = (userId, username, kif) => {
+    const insertUser = 'INSERT INTO kif_user(userid, username) VALUES($1, $2)\n' +
+        'ON CONFLICT (userid)\n' +
+        '    DO NOTHING;'
+    client.query(insertUser, [userId, username]).then(res => {
+    });
     const insert = 'INSERT INTO kif("userId", "username", "kif") VALUES($1, $2, $3) ';
     client.query(insert, [userId, username, kif])
         .then(res => {
@@ -32,7 +37,7 @@ const getRandomKif = (userId, interaction, ephemeral) => {
 };
 
 const getUserIds = async () => {
-    const query = 'SELECT distinct "userId" from kif k WHERE "k.notify"=true';
+    const query = 'SELECT distinct "userid" from kif_user WHERE "notify"=true;';
     const res = await client.query(query);
     return res.rows;
 }
