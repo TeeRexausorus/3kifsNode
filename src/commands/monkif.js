@@ -13,6 +13,6 @@ module.exports = {
         let kiffance = interaction.options.getString('kif');
         let {id: userId, username } = interaction.user;
         pgController.insertKif(userId, username, kiffance);
-        await interaction.reply({content: `Tu as donc eu ce kif : "${kiffance}". Et quoi d'autre ? :D`, ephemeral: true});
+        interaction.reply({content: `Tu as donc eu ce kif : "${kiffance}". Et quoi d'autre ? :D`, ephemeral: true});
     },
 };

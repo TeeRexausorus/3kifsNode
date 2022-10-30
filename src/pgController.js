@@ -32,7 +32,7 @@ const getRandomKif = (userId, interaction, ephemeral) => {
 };
 
 const getUserIds = async () => {
-    const query = 'SELECT distinct "userId" from kif';
+    const query = 'SELECT distinct "userId" from kif k WHERE "k.notify"=true';
     const res = await client.query(query);
     return res.rows;
 }
