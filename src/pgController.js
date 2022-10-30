@@ -10,6 +10,13 @@ client
     .then(() => console.log('Postgres connected'))
     .catch(err => console.error('connection error', err.stack));
 
+const swapNotif = (userid, interaction) => {
+    const swapUpdate = 'UPDATE kif_user SET notify = NOT notify WHERE userid=$1 RETURNING notify';
+    client.query(swapUpdate, [userid]).then(res =>{
+        interaction.reply({content: res.rows[0].notify ? 'Ok, je t\'enverrai une notification de rappel ;)': 'Ok, plus de notification :(', ephemeral: true});
+    });
+}
+
 const insertKif = (userId, username, kif) => {
     const insertUser = 'INSERT INTO kif_user(userid, username) VALUES($1, $2)\n' +
         'ON CONFLICT (userid)\n' +
@@ -44,3 +51,4 @@ const getUserIds = async () => {
 exports.insertKif = insertKif;
 exports.getRandomKif = getRandomKif;
 exports.getUserIds = getUserIds;
+exports.swapNotif = swapNotif;
