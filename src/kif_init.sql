@@ -9,5 +9,23 @@ create table kif
     username  text
 );
 
+-- auto-generated definition
+create table kif_user
+(
+    userid   text,
+    username text,
+    id       uuid    default uuid_generate_v4() not null,
+    notify   boolean default false
+);
+
+create unique index kif_user_username_uindex
+    on kif_user (username);
+
+create unique index kif_user_userid_uindex
+    on kif_user (userid);
+
+alter table kif_user
+    owner to postgres;
+
 alter table kif
     owner to postgres;

@@ -12,8 +12,11 @@ client
 
 const swapNotif = (userid, interaction) => {
     const swapUpdate = 'UPDATE kif_user SET notify = NOT notify WHERE userid=$1 RETURNING notify';
-    client.query(swapUpdate, [userid]).then(res =>{
-        interaction.reply({content: res.rows[0].notify ? 'Ok, je t\'enverrai une notification de rappel ;)': 'Ok, plus de notification :(', ephemeral: true});
+    client.query(swapUpdate, [userid]).then(res => {
+        interaction.reply({
+            content: res.rows[0].notify ? 'Ok, je t\'enverrai une notification de rappel ;)' : 'Ok, plus de notification :(',
+            ephemeral: true
+        });
     });
 }
 
@@ -36,10 +39,14 @@ const getRandomKif = (userId, interaction, ephemeral) => {
     client.query(query, [userId])
         .then(res => {
             const {day_out, month_out, year_out, kif, username} = res.rows[0];
-            let ret = ephemeral ?
-                `Le ${day_out} ${monthNames[month_out - 1]} ${year_out}, tu as eu ce kif : ${kif}`
-                : `Le ${day_out} ${monthNames[month_out - 1]} ${year_out}, ${username} a eu ce kif : ${kif}`;
+            let ret = `Le ${day_out} ${monthNames[month_out - 1]} ${year_out}, `
+            + ephemeral ?
+                `tu as eu ce kif : ${kif}`
+                : `${username} a eu ce kif : ${kif}`;
             interaction.reply({content: ret, ephemeral: ephemeral});
+        })
+        .catch(() => {
+            interaction.reply({content: 'Impossible de récupérer un kif, vous êtes sûr d\'en avoir enregistré ?', ephemeral: ephemeral});
         })
 };
 
