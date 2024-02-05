@@ -8,11 +8,16 @@ module.exports = {
         .addStringOption(option =>
             option.setName('kif')
                 .setDescription('Le kif du jour').setRequired(true)
-        ),
+        )
+        .addBooleanOption(option =>
+            option.setName('public')
+                .setDescription('Le lire à l\'ajout ?').setRequired(false)),
     async execute(interaction) {
         let kiffance = interaction.options.getString('kif');
-        let {id: userId, username } = interaction.user;
+        let publicKif = interaction.options.getBoolean('public') === null ? false : interaction.options.getBoolean('public');
+        console.log(publicKif);
+        let {id: userId, username} = interaction.user;
         pgController.insertKif(userId, username, kiffance);
-        interaction.reply({content: `Tu as donc eu ce kif : "${kiffance}". Et quoi d'autre ? :D`, ephemeral: true});
+        interaction.reply({content: `Tu as donc eu ce kif : "${kiffance}". Et quoi d'autre ? :D`, ephemeral: !publicKif});
     },
 };
