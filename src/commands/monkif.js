@@ -15,7 +15,6 @@ module.exports = {
     async execute(interaction) {
         let kiffance = interaction.options.getString('kif');
         let publicKif = interaction.options.getBoolean('public') === null ? false : interaction.options.getBoolean('public');
-        console.log(publicKif);
         let {id: userId, username} = interaction.user;
         pgController.insertKif(userId, username, kiffance);
         interaction.reply({content: `Tu as donc eu ce kif : "${kiffance}". Et quoi d'autre ? :D`, ephemeral: !publicKif});
